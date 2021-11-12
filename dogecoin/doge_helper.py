@@ -79,6 +79,7 @@ def get_db_handle():
     cur.execute(sql)
     return con
 
+
 def get_trans_detail_info(trans_list):
     """
     获取每个交易的详细信息
@@ -88,9 +89,20 @@ def get_trans_detail_info(trans_list):
     ret_trans_detail = {}
     base_url = 'https://api.blockchair.com/dogecoin/dashboards/transaction/%s'
     for trans in trans_list:
+        tmp_trans_data = {}
         url = base_url % trans
         response = requests.get(url)
         json_data = json.loads(response.text)
+        inputs_data = json_data['data'][trans]['inputs']
+        outputs_data = json_data['data'][trans]['outputs']
+        for data in inputs_data:
+            addr = data['recipient']
+            doges = -1 * (data['value'] // 10000000)
+            usdts = int(data['value_usd'])
+            trans_time = data['time']
+            trans_date = data['date']
+            tmp_trans_data[addr]
+
 
 def get_doge_rich_trans_trans_info(con):
     """
